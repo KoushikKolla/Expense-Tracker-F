@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Smart Expense Tracker
 
 A full-featured, modern MERN stack application for tracking expenses and incomes, with authentication, analytics, and a beautiful, responsive UI.
@@ -95,3 +96,6 @@ Expense-Tracker F/
 ## License
 
 This project is for educational and personal use. Icons are provided by [Icons8](https://icons8.com/). 
+=======
+# Expense-Tracker-F
+>>>>>>> aef2313f827fc3a071670610ad1f357278f88050
