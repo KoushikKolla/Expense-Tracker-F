@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 
 const getToday = () => {
@@ -22,9 +22,13 @@ const initialState = {
     customCategory: '',
 };
 
-function TransactionForm() {
-    const [form, setForm] = useState(initialState);
+function TransactionForm({ initialValues, onSubmit }) {
+    const [form, setForm] = useState(initialValues || initialState);
     const { addTransaction } = useContext(TransactionContext);
+
+    useEffect(() => {
+        if (initialValues) setForm(initialValues);
+    }, [initialValues]);
 
     const categories = form.type === 'expense' ? EXPENSE_CATEGORIES : INCOME_CATEGORIES;
     const showCustom = form.category === 'Other';
@@ -41,12 +45,12 @@ function TransactionForm() {
         e.preventDefault();
         const category = showCustom ? form.customCategory : form.category;
         if (!form.title || !form.amount || !category || !form.date) return;
-        await addTransaction({
-            ...form,
-            category,
-            amount: parseFloat(form.amount),
-        });
-        setForm({ ...initialState, date: getToday() });
+        if (onSubmit) {
+            await onSubmit({ ...form, category, amount: parseFloat(form.amount) });
+        } else {
+            await addTransaction({ ...form, category, amount: parseFloat(form.amount) });
+            setForm({ ...initialState, date: getToday() });
+        }
     };
 
     return (
@@ -65,7 +69,7 @@ function TransactionForm() {
             <input name="title" placeholder="Title" value={form.title} onChange={handleChange} required autoComplete="off" />
             <input name="amount" type="number" placeholder="Amount" value={form.amount} onChange={handleChange} required min="0.01" step="0.01" autoComplete="off" />
             <input name="date" type="date" value={form.date} onChange={handleChange} required autoComplete="off" />
-            <button type="submit">Add</button>
+            <button className="primary-btn" type="submit">{initialValues ? 'Update' : 'Add'}</button>
         </form>
     );
 }

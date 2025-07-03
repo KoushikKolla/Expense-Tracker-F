@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard';
 import ExpensesPage from './pages/ExpensesPage';
 import Profile from './pages/Profile';
 import MonthlyUsagePage from './pages/MonthlyUsagePage';
+import BillUpload from './pages/BillUpload';
+import BillsList from './pages/BillsList';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { DarkModeProvider, DarkModeContext } from './context/DarkModeContext';
 import './App.css';
@@ -15,8 +17,10 @@ function NavBar() {
     const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
     const navigate = useNavigate();
     const handleLogout = () => {
-        logout();
-        navigate('/login');
+        if (window.confirm('Are you sure you want to logout?')) {
+            logout();
+            navigate('/login');
+        }
     };
     return (
         <header className="main-header">
@@ -30,6 +34,9 @@ function NavBar() {
                 </Link>
                 <Link to="/expenses">
                     <img src="https://img.icons8.com/fluency/512/wallet.png" alt="expenses" style={{ width: 28, height: 28, verticalAlign: 'middle' }} /> Expenses
+                </Link>
+                <Link to="/bills">
+                    <img src="https://img.icons8.com/?size=100&id=123456&format=png&color=000000" alt="bills" style={{ width: 26, height: 26, verticalAlign: 'middle' }} /> Bills
                 </Link>
                 <Link to="/monthly-usage">
                     <img src="https://img.icons8.com/?size=100&id=FSrTPNNurgeY&format=png&color=000000" alt="monthly usage" style={{ width: 26, height: 26, verticalAlign: 'middle' }} /> Monthly Usage
@@ -61,6 +68,8 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/expenses" element={<ExpensesPage />} />
+                    <Route path="/bills" element={<BillsList />} />
+                    <Route path="/upload-bill" element={<BillUpload />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/monthly-usage" element={<MonthlyUsagePage />} />
                     <Route path="*" element={<Navigate to="/login" />} />

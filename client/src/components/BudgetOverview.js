@@ -16,7 +16,7 @@ function BudgetOverview() {
     const formatINR = amount => amount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
 
     return (
-        <div className="budget-overview">
+        <div className="budget-overview card">
             <h3>Budget Overview</h3>
             <div>Total Income: <span className="income">{formatINR(totalIncome)}</span></div>
             <div>Total Expense: <span className="expense">{formatINR(totalExpense)}</span></div>

@@ -2,7 +2,16 @@ import React, { useState, useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 
 export const EXPENSE_CATEGORIES = [
-    'Education', 'Utilities', 'Food', 'Health', 'Other'
+    'Transportation',
+    'Food',
+    'Utilities',
+    'Health',
+    'Entertainment',
+    'Shopping',
+    'Education',
+    'Rent',
+    'Travel',
+    'Other'
 ];
 export const INCOME_CATEGORIES = [
     'Salary', 'Business', 'Investment', 'Gift', 'Other'

@@ -141,7 +141,7 @@ function Login() {
                         {error}
                     </div>}
                 </form>
-                <p style={{ textAlign: 'center', marginTop: 28, fontSize: 16 }}>Don't have an account? <a href="/signup" style={{ color: '#1976d2', fontWeight: 700 }}>Sign up</a></p>
+                <p style={{ textAlign: 'center', marginTop: 28, fontSize: 16, color: '#222' }}>Don't have an account? <a href="/signup" style={{ color: '#1976d2', fontWeight: 700 }}>Sign up</a></p>
             </div>
             <style>{`
                 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }

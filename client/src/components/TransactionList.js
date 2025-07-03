@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 
-function TransactionList({ transactions: propTransactions }) {
+function TransactionList({ transactions: propTransactions, onEdit }) {
     const { transactions: contextTransactions, deleteTransaction } = useContext(TransactionContext);
     const transactions = propTransactions || contextTransactions;
     const formatINR = amount => amount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
@@ -31,7 +31,8 @@ function TransactionList({ transactions: propTransactions }) {
                                 {t.type === 'expense' ? 'Expense' : 'Income'}
                             </td>
                             <td>
-                                <button onClick={() => deleteTransaction(t._id)}>Delete</button>
+                                <button className="delete-btn" onClick={() => deleteTransaction(t._id)}>Delete</button>
+                                <button className="edit-btn" style={{ marginLeft: 8 }} onClick={() => onEdit && onEdit(t)}>Edit</button>
                             </td>
                         </tr>
                     ))}

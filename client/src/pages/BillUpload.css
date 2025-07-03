@@ -1,0 +1,296 @@
+.bill-upload {
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: all 0.3s ease;
+}
+
+.bill-upload.dark {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+.bill-upload-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.bill-upload.dark .bill-upload-container {
+    background: rgba(44, 62, 80, 0.95);
+    color: #ecf0f1;
+}
+
+.bill-upload h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.bill-upload.dark h1 {
+    color: #ecf0f1;
+}
+
+.subtitle {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+.bill-upload.dark .subtitle {
+    color: #bdc3c7;
+}
+
+.bill-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.95rem;
+}
+
+.bill-upload.dark .form-group label {
+    color: #ecf0f1;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px 16px;
+    border: 2px solid #e0e6ed;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fff;
+    color: #2c3e50;
+}
+
+.bill-upload.dark .form-group input,
+.bill-upload.dark .form-group select,
+.bill-upload.dark .form-group textarea {
+    background: #34495e;
+    border-color: #4a5f7a;
+    color: #ecf0f1;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.bill-upload.dark .form-group input:focus,
+.bill-upload.dark .form-group select:focus,
+.bill-upload.dark .form-group textarea:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group input[type="file"] {
+    padding: 10px;
+    border: 2px dashed #bdc3c7;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bill-upload.dark .form-group input[type="file"] {
+    background: #2c3e50;
+    border-color: #4a5f7a;
+}
+
+.form-group input[type="file"]:hover {
+    border-color: #667eea;
+    background: #f0f2ff;
+}
+
+.bill-upload.dark .form-group input[type="file"]:hover {
+    border-color: #3498db;
+    background: #2c3e50;
+}
+
+.form-group small {
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+.bill-upload.dark .form-group small {
+    color: #bdc3c7;
+}
+
+.file-preview {
+    background: #f8f9fa;
+    border: 2px solid #e0e6ed;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.bill-upload.dark .file-preview {
+    background: #2c3e50;
+    border-color: #4a5f7a;
+}
+
+.file-preview h4 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.bill-upload.dark .file-preview h4 {
+    color: #ecf0f1;
+}
+
+.file-preview img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.file-preview p {
+    margin: 0;
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+.bill-upload.dark .file-preview p {
+    color: #bdc3c7;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.submit-btn,
+.cancel-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.cancel-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+}
+
+.error-message {
+    background: #fee;
+    color: #c0392b;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #e74c3c;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.bill-upload.dark .error-message {
+    background: rgba(231, 76, 60, 0.1);
+    border-left-color: #e74c3c;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #28a745;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.bill-upload.dark .success-message {
+    background: rgba(40, 167, 69, 0.1);
+    border-left-color: #28a745;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .bill-upload {
+        padding: 10px;
+    }
+
+    .bill-upload-container {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .submit-btn,
+    .cancel-btn {
+        width: 100%;
+    }
+
+    .bill-upload h1 {
+        font-size: 2rem;
+    }
+}

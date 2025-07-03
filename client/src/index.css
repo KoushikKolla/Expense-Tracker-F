@@ -1,13 +1,22 @@
 :root {
-    --bg: #f7f7f7;
+    --bg: #fdfbfb;
     --card-bg: #fff;
     --text: #222;
-    --primary: #1976d2;
-    --primary-dark: #1565c0;
+    --primary: linear-gradient(135deg, #667eea, #764ba2);
+    --primary-solid: #667eea;
+    --primary-dark: #764ba2;
     --accent: #fbc02d;
     --error: #d32f2f;
     --border: #bbb;
     --input-bg: #fff;
+    --income-gradient: linear-gradient(135deg, #43e97b, #38f9d7);
+    --expense-gradient: linear-gradient(135deg, #f85032, #e73827);
+    --chart1: #6a11cb;
+    --chart2: #2575fc;
+    --chart3: #43e97b;
+    --chart4: #ff758c;
+    --chart5: #ff7eb3;
+    --chart6: #ffe259;
 }
 
 body {
@@ -19,15 +28,24 @@ body {
 }
 
 .dark-mode {
-    --bg: #181a1b;
+    --bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     --card-bg: #23272f;
     --text: #f1f1f1;
-    --primary: #90caf9;
-    --primary-dark: #1976d2;
+    --primary: linear-gradient(135deg, #fc466b, #3f5efb);
+    --primary-solid: #3f5efb;
+    --primary-dark: #fc466b;
     --accent: #ffd54f;
     --error: #ef5350;
     --border: #444;
     --input-bg: #23272f;
+    --income-gradient: linear-gradient(135deg, #11998e, #38ef7d);
+    --expense-gradient: linear-gradient(135deg, #ff416c, #ff4b2b);
+    --chart1: #00c6ff;
+    --chart2: #f77062;
+    --chart3: #7f00ff;
+    --chart4: #fc466b;
+    --chart5: #6dd5ed;
+    --chart6: #fddb92;
 }
 
 .dashboard,
@@ -176,18 +194,30 @@ textarea:focus {
 }
 
 .budget-overview .income {
-    color: #388e3c;
+    background: var(--income-gradient);
+    color: #fff;
+    padding: 0.3rem 1.1rem;
+    border-radius: 8px;
     font-weight: bold;
+    display: inline-block;
 }
 
 .budget-overview .expense {
-    color: #d32f2f;
+    background: var(--expense-gradient);
+    color: #fff;
+    padding: 0.3rem 1.1rem;
+    border-radius: 8px;
     font-weight: bold;
+    display: inline-block;
 }
 
 .budget-overview .negative {
-    color: #d32f2f;
+    background: var(--expense-gradient);
+    color: #fff;
+    padding: 0.3rem 1.1rem;
+    border-radius: 8px;
     font-weight: bold;
+    display: inline-block;
 }
 
 .budget-overview .warning {
@@ -214,17 +244,7 @@ textarea:focus {
 }
 
 .transaction-form button {
-    background: #1976d2;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.transaction-form button:hover {
-    background: #1565c0;
+    composes: primary-btn;
 }
 
 .filters {
@@ -582,4 +602,123 @@ textarea:focus {
 .profile-icon-link:hover {
     background: var(--primary-dark);
     color: #fff;
+}
+
+.primary-btn,
+.transaction-form button,
+.filters button,
+.auth-container button,
+.logout-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.primary-btn:hover,
+.transaction-form button:hover,
+.filters button:hover,
+.auth-container button:hover,
+.logout-btn:hover {
+    filter: brightness(0.95);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.card,
+.dashboard,
+.profile-card,
+.bills-header,
+.bill-card,
+.bill-upload-container {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Chart color classes for Pie/Histogram bars */
+.chart-color-1 {
+    fill: var(--chart1);
+}
+
+.chart-color-2 {
+    fill: var(--chart2);
+}
+
+.chart-color-3 {
+    fill: var(--chart3);
+}
+
+.chart-color-4 {
+    fill: var(--chart4);
+}
+
+.chart-color-5 {
+    fill: var(--chart5);
+}
+
+.chart-color-6 {
+    fill: var(--chart6);
+}
+
+.edit-btn {
+    background: #43e97b;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 1.1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    box-shadow: 0 2px 8px rgba(67, 233, 123, 0.08);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.edit-btn:hover {
+    background: #11998e;
+    filter: brightness(0.97);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.delete-btn {
+    background: linear-gradient(135deg, #f85032, #e73827);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 1.1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(248, 80, 50, 0.08);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(135deg, #e73827, #f85032);
+    filter: brightness(0.97);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.dark-mode .edit-btn {
+    background: #11998e;
+    color: #fff;
+}
+
+.dark-mode .edit-btn:hover {
+    background: #43e97b;
+}
+
+.dark-mode .delete-btn {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: #fff;
+}
+
+.dark-mode .delete-btn:hover {
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
 }
