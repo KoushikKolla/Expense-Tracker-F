@@ -1,4 +1,11 @@
 {
+  "name": "expense-tracker-root",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "echo 'Please run npm start in client or server directory'",
+    "build": "cd client && npm run build && cd ../server && npm install",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install"
+  },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "jspdf": "^3.0.1",
