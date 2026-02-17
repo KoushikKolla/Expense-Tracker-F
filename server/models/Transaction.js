@@ -14,7 +14,9 @@ const TransactionSchema = new mongoose.Schema({
         fileId: { type: String }, // GridFS file ID
         filename: { type: String },
         fileType: { type: String, enum: ['pdf', 'jpg'] }
-    }
+    },
+    group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' }, // Reference to Group
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Who added the transaction
 }, { timestamps: true });
 
 module.exports = mongoose.model('Transaction', TransactionSchema); 

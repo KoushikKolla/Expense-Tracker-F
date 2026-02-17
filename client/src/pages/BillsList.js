@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { DarkModeContext } from '../context/DarkModeContext';
 import './BillsList.css';
+import { FaTimes, FaTrash, FaEye } from 'react-icons/fa';
 
 const BillsList = () => {
     const { token } = useContext(AuthContext);
@@ -14,6 +15,9 @@ const BillsList = () => {
     const [error, setError] = useState('');
     const [selectedBill, setSelectedBill] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [fileUrl, setFileUrl] = useState(null);
+    const [fileError, setFileError] = useState(null);
+    const [modalHiding, setModalHiding] = useState(false);
 
     useEffect(() => {
         fetchBills();
@@ -47,14 +51,49 @@ const BillsList = () => {
         }
     };
 
-    const openModal = (bill) => {
+    const fetchBillFile = async (fileId) => {
+        console.log('Fetching bill file with token:', token);
+        const response = await fetch(
+            `http://localhost:5000/api/bills/file/${fileId}`,
+            {
+                headers: { Authorization: `Bearer ${token}` }
+            }
+        );
+        if (!response.ok) {
+            throw new Error('File not found');
+        }
+        const blob = await response.blob();
+        return URL.createObjectURL(blob);
+    };
+
+    const openModal = async (bill) => {
         setSelectedBill(bill);
         setShowModal(true);
+        setFileError(null);
+        if (bill.billFile) {
+            try {
+                const url = await fetchBillFile(bill.billFile.fileId);
+                setFileUrl(url);
+                setFileError(null);
+            } catch (err) {
+                setFileUrl(null);
+                setFileError('Bill file not found or has been deleted.');
+            }
+        }
     };
 
     const closeModal = () => {
-        setShowModal(false);
-        setSelectedBill(null);
+        setModalHiding(true);
+        setTimeout(() => {
+            setShowModal(false);
+            setSelectedBill(null);
+            if (fileUrl) {
+                URL.revokeObjectURL(fileUrl);
+                setFileUrl(null);
+            }
+            setFileError(null);
+            setModalHiding(false);
+        }, 220); // match CSS transition duration
     };
 
     const formatDate = (dateString) => {
@@ -75,6 +114,16 @@ const BillsList = () => {
     const getFileUrl = (fileId) => {
         return `http://localhost:5000/api/bills/file/${fileId}`;
     };
+
+    // Accessibility: close modal on Esc
+    useEffect(() => {
+        if (!showModal) return;
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') closeModal();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [showModal]);
 
     if (loading) {
         return (
@@ -141,14 +190,16 @@ const BillsList = () => {
                                     <button
                                         className="view-btn"
                                         onClick={() => openModal(bill)}
+                                        aria-label="View bill"
                                     >
-                                        👁️ View Bill
+                                        <FaEye style={{ marginRight: 6 }} /> View
                                     </button>
                                     <button
                                         className="delete-btn"
                                         onClick={() => handleDeleteBill(bill._id)}
+                                        aria-label="Delete bill"
                                     >
-                                        🗑️ Delete
+                                        <FaTrash style={{ marginRight: 6 }} /> Delete
                                     </button>
                                 </div>
                             </div>
@@ -159,13 +210,14 @@ const BillsList = () => {
 
             {/* Modal for viewing bill */}
             {showModal && selectedBill && (
-                <div className="modal-overlay" onClick={closeModal}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className={`modal-overlay${modalHiding ? ' hide' : ''}`} onClick={closeModal} aria-modal="true" role="dialog">
+                    <div className={`modal-content${modalHiding ? ' hide' : ''}`} onClick={(e) => e.stopPropagation()} tabIndex={-1}>
                         <div className="modal-header">
                             <h2>{selectedBill.title}</h2>
-                            <button className="close-btn" onClick={closeModal}>×</button>
+                            <button className="close-btn" onClick={closeModal} aria-label="Close bill preview">
+                                <FaTimes />
+                            </button>
                         </div>
-
                         <div className="modal-body">
                             <div className="bill-info">
                                 <div className="info-row">
@@ -191,25 +243,29 @@ const BillsList = () => {
                             </div>
 
                             {selectedBill.billFile && (
-                                <div className="bill-preview">
-                                    <h4>Bill Preview:</h4>
-                                    {selectedBill.billFile.fileType === 'pdf' ? (
+                                fileError ? (
+                                    <div style={{ color: 'red', textAlign: 'center', margin: 16 }}>{fileError}</div>
+                                ) : fileUrl ? (
+                                    selectedBill.billFile.fileType === 'pdf' ? (
                                         <div className="pdf-preview">
                                             <iframe
-                                                src={getFileUrl(selectedBill.billFile.fileId)}
+                                                src={fileUrl}
                                                 title="Bill PDF"
                                                 width="100%"
                                                 height="400px"
+                                                style={{ border: 'none', borderRadius: 8 }}
                                             />
                                         </div>
                                     ) : (
                                         <img
-                                            src={getFileUrl(selectedBill.billFile.fileId)}
-                                            alt="Bill preview"
+                                            src={fileUrl}
+                                            alt="Bill"
                                             className="bill-image"
                                         />
-                                    )}
-                                </div>
+                                    )
+                                ) : (
+                                    <div className="spinner" aria-label="Loading bill preview"></div>
+                                )
                             )}
                         </div>
                     </div>

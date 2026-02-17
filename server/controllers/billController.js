@@ -166,7 +166,16 @@ const deleteBill = async (req, res) => {
 
         // Delete file from GridFS
         if (transaction.billFile.fileId) {
-            await deleteFile(transaction.billFile.fileId);
+            try {
+                await deleteFile(transaction.billFile.fileId);
+            } catch (err) {
+                // If file not found, log and continue
+                if (err.message && err.message.includes('File not found')) {
+                    console.warn('GridFS file not found, continuing to remove billFile from transaction.');
+                } else {
+                    throw err;
+                }
+            }
         }
 
         // Remove bill file from transaction

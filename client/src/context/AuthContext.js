@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('loginTime', now.toISOString());
     };
 
-    const signup = async (username, email, password) => {
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, { username, email, password });
+    const signup = async (username, email, password, groupName) => {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, { username, email, password, groupName });
         setToken(res.data.token);
         localStorage.setItem('token', res.data.token);
         setUser(res.data.user);

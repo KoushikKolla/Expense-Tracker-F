@@ -22,7 +22,7 @@ const initialState = {
     customCategory: '',
 };
 
-function TransactionForm({ initialValues, onSubmit }) {
+function TransactionForm({ initialValues, onSubmit, onCancel }) { // Accept onCancel
     const [form, setForm] = useState(initialValues || initialState);
     const { addTransaction } = useContext(TransactionContext);
 
@@ -69,9 +69,17 @@ function TransactionForm({ initialValues, onSubmit }) {
             <input name="title" placeholder="Title" value={form.title} onChange={handleChange} required autoComplete="off" />
             <input name="amount" type="number" placeholder="Amount" value={form.amount} onChange={handleChange} required min="0.01" step="0.01" autoComplete="off" />
             <input name="date" type="date" value={form.date} onChange={handleChange} required autoComplete="off" />
-            <button className="primary-btn" type="submit">{initialValues ? 'Update' : 'Add'}</button>
+
+            {initialValues ? (
+                <div className="buttons-container">
+                    <button className="primary-btn" type="submit">Update</button>
+                    {onCancel && <button type="button" className="cancel-btn" onClick={onCancel}>Cancel</button>}
+                </div>
+            ) : (
+                <button className="primary-btn" type="submit">Add</button>
+            )}
         </form>
     );
 }
 
-export default TransactionForm; 
+export default TransactionForm;

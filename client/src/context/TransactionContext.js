@@ -24,10 +24,19 @@ export const TransactionProvider = ({ children }) => {
     };
 
     const updateTransaction = async (id, data) => {
-        const res = await axios.put(`${process.env.REACT_APP_API_URL}/expenses/${id}`, data, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        setTransactions(prev => prev.map(t => t._id === id ? res.data : t));
+        console.log('updateTransaction called with id:', id, 'data:', data);
+        try {
+            const res = await axios.put(`${process.env.REACT_APP_API_URL}/expenses/${id}`, data, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setTransactions(prev => prev.map(t => t._id === id ? res.data : t));
+        } catch (err) {
+            if (err.response && err.response.data && err.response.data.message) {
+                throw new Error(err.response.data.message);
+            } else {
+                throw new Error('An error occurred while updating the transaction.');
+            }
+        }
     };
 
     const deleteTransaction = async (id) => {

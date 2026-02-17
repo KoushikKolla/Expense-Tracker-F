@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Signup() {
     const { signup } = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [groupName, setGroupName] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ function Signup() {
         setLoading(true);
         setError('');
         try {
-            await signup(username, email, password);
+            await signup(username, email, password, groupName);
             setTimeout(() => navigate('/dashboard'), 500);
         } catch (err) {
             setError(err?.response?.data?.message || 'Signup failed');
@@ -27,141 +28,107 @@ function Signup() {
     };
 
     return (
-        <div style={{
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(120deg, #e0e7ef 0%, #c3cfe2 50%, #f5f7fa 100%)',
-            fontFamily: 'Inter, Roboto, system-ui, sans-serif',
-            boxSizing: 'border-box',
-            paddingTop: 64,
-            paddingBottom: 64,
-        }}>
-            <div style={{
-                background: 'rgba(255,255,255,0.75)',
-                borderRadius: 28,
-                boxShadow: '0 8px 40px 0 rgba(30,60,90,0.18)',
-                padding: '56px 36px 44px 36px',
-                minWidth: 320,
-                maxWidth: 400,
-                width: '90vw',
-                border: '1.5px solid rgba(200,200,200,0.18)',
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                backdropFilter: 'blur(16px)',
-                WebkitBackdropFilter: 'blur(16px)',
-                boxSizing: 'border-box',
-            }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 18 }}>
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+            <div className="auth-container">
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}>
                     <div style={{
-                        width: 60, height: 60, borderRadius: '50%', background: 'linear-gradient(135deg, #ffe082 60%, #ffd54f 100%)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8,
-                        boxShadow: '0 2px 16px 0 #ffd54f88',
+                        width: 60, height: 60, borderRadius: '50%', background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem',
+                        boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
                     }}>
                         <img src="https://img.icons8.com/color/48/000000/rupee.png" alt="logo" style={{ width: 36, height: 36 }} />
                     </div>
-                    <h1 style={{ textAlign: 'center', margin: 0, fontWeight: 900, fontSize: 28, letterSpacing: 0.5, color: '#1976d2', textShadow: '0 2px 8px #e3e8ee' }}>Smart Expense Tracker</h1>
+                    <h1 style={{ textAlign: 'center', margin: 0, fontWeight: 700, fontSize: '1.75rem', color: 'var(--primary)', letterSpacing: '-0.5px' }}>
+                        Smart Expense Tracker
+                    </h1>
                 </div>
-                <h2 style={{ textAlign: 'center', margin: '18px 0 28px 0', fontWeight: 700, fontSize: 22, color: '#222', letterSpacing: 0.2 }}>Sign Up</h2>
-                <form onSubmit={handleSubmit} autoComplete="off" style={{ width: '88%', display: 'flex', flexDirection: 'column', gap: 24, boxSizing: 'border-box' }}>
-                    <label htmlFor="signup-username" style={{ fontWeight: 600, color: '#444', marginBottom: 6, marginLeft: 2 }}>Username</label>
-                    <div style={{ position: 'relative', marginBottom: 8, width: '100%', boxSizing: 'border-box' }}>
+
+                <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--text-main)' }}>Create Account</h2>
+
+                <form onSubmit={handleSubmit} autoComplete="off">
+                    <div className="form-group" style={{ marginBottom: '1rem', textAlign: 'left' }}>
+                        <label htmlFor="signup-username" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Username</label>
                         <input
                             type="text"
                             id="signup-username"
                             value={username}
                             onChange={e => setUsername(e.target.value)}
                             required
-                            autoComplete="off"
-                            placeholder="Enter your username"
-                            style={{
-                                width: '100%', height: 50, borderRadius: 14, border: 'none', fontSize: 17,
-                                paddingLeft: 18, background: 'rgba(245,247,250,0.85)',
-                                outline: 'none', fontWeight: 500, color: '#222',
-                                boxShadow: '0 2px 8px 0 #e3e8ee',
-                                transition: 'box-shadow 0.2s',
-                                boxSizing: 'border-box',
-                            }}
+                            placeholder="Choose a username"
                         />
                     </div>
-                    <label htmlFor="signup-email" style={{ fontWeight: 600, color: '#444', marginBottom: 6, marginLeft: 2 }}>Email</label>
-                    <div style={{ position: 'relative', marginBottom: 8, width: '100%', boxSizing: 'border-box' }}>
+
+                    <div className="form-group" style={{ marginBottom: '1rem', textAlign: 'left' }}>
+                        <label htmlFor="signup-email" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Email</label>
                         <input
                             type="email"
                             id="signup-email"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
                             required
-                            autoComplete="off"
                             placeholder="Enter your email"
-                            style={{
-                                width: '100%', height: 50, borderRadius: 14, border: 'none', fontSize: 17,
-                                paddingLeft: 18, background: 'rgba(245,247,250,0.85)',
-                                outline: 'none', fontWeight: 500, color: '#222',
-                                boxShadow: '0 2px 8px 0 #e3e8ee',
-                                transition: 'box-shadow 0.2s',
-                                boxSizing: 'border-box',
-                            }}
                         />
                     </div>
-                    <label htmlFor="signup-password" style={{ fontWeight: 600, color: '#444', marginBottom: 6, marginLeft: 2 }}>Password</label>
-                    <div style={{ position: 'relative', marginBottom: 8, width: '100%', boxSizing: 'border-box' }}>
+
+                    <div className="form-group" style={{ marginBottom: '1rem', textAlign: 'left', position: 'relative' }}>
+                        <label htmlFor="signup-password" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Password</label>
+                        <div style={{ position: 'relative' }}>
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id="signup-password"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                required
+                                autoComplete="new-password"
+                                placeholder="Create a password"
+                                style={{ paddingRight: '40px' }}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                style={{
+                                    position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+                                    background: 'none', border: 'none', padding: 0, boxShadow: 'none'
+                                }}
+                            >
+                                {showPassword ? (
+                                    <img src="https://img.icons8.com/ios-glyphs/30/94a3b8/invisible.png" alt="hide" style={{ width: 20, height: 20 }} />
+                                ) : (
+                                    <img src="https://img.icons8.com/ios-glyphs/30/94a3b8/visible--v1.png" alt="show" style={{ width: 20, height: 20 }} />
+                                )}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
+                        <label htmlFor="signup-group" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Group Name (Optional)</label>
                         <input
-                            type={showPassword ? 'text' : 'password'}
-                            id="signup-password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            required
-                            autoComplete="new-password"
-                            placeholder="Enter your password"
-                            style={{
-                                width: '100%', height: 50, borderRadius: 14, border: 'none', fontSize: 17,
-                                paddingLeft: 18, paddingRight: 44, background: 'rgba(245,247,250,0.85)',
-                                outline: 'none', fontWeight: 500, color: '#222',
-                                boxShadow: '0 2px 8px 0 #e3e8ee',
-                                transition: 'box-shadow 0.2s',
-                                boxSizing: 'border-box',
-                            }}
+                            type="text"
+                            id="signup-group"
+                            value={groupName}
+                            onChange={e => setGroupName(e.target.value)}
+                            placeholder="e.g. MyFamily"
                         />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(s => !s)}
-                            tabIndex={-1}
-                            style={{ position: 'absolute', right: 12, top: 13, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-                            aria-label={showPassword ? 'Hide password' : 'Show password'}
-                        >
-                            {showPassword ? (
-                                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path fill="#1976d2" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 12c-4.41 0-7.34-3.36-8.46-5C4.66 8.36 7.59 5 12 5s7.34 3.36 8.46 5C19.34 13.64 16.41 17 12 17Zm0-10a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" /></svg>
-                            ) : (
-                                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path fill="#1976d2" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 12c-4.41 0-7.34-3.36-8.46-5C4.66 8.36 7.59 5 12 5s7.34 3.36 8.46 5C19.34 13.64 16.41 17 12 17Zm0-10a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" /></svg>
-                            )}
-                        </button>
                     </div>
-                    <button type="submit" disabled={loading} style={{
-                        height: 50, borderRadius: 14, background: 'linear-gradient(90deg, #1976d2 60%, #64b5f6 100%)', color: '#fff', fontWeight: 700, fontSize: 19, border: 'none', marginTop: 8,
-                        cursor: loading ? 'not-allowed' : 'pointer', boxShadow: loading ? '0 0 0 2px #1976d2' : '0 2px 8px #1976d2aa', transition: 'background 0.2s', width: '100%',
-                        letterSpacing: 0.5
-                    }}>
-                        {loading ? <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span className="spinner" style={{ width: 24, height: 24, border: '3px solid #fff', borderTop: '3px solid #1976d2', borderRadius: '50%', display: 'inline-block', animation: 'spin 1s linear infinite', marginRight: 10 }}></span>Signing up...</span> : 'Sign Up'}
+
+                    <button type="submit" disabled={loading} style={{ width: '100%', marginTop: '0.5rem' }}>
+                        {loading ? 'Creating account...' : 'Sign Up'}
                     </button>
-                    {error && <div style={{ background: '#ffeaea', color: '#e53935', borderRadius: 10, padding: '12px 0', textAlign: 'center', fontWeight: 600, marginTop: 2, boxShadow: '0 2px 8px rgba(229,57,53,0.08)', fontSize: 15 }}>
-                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" style={{ marginRight: 6, verticalAlign: 'middle' }}><path fill="#e53935" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z" /></svg>
+
+                    {error && <div style={{
+                        marginTop: '1rem', padding: '0.75rem', borderRadius: '8px',
+                        background: 'rgba(239, 68, 68, 0.1)', color: 'var(--danger)', fontSize: '0.9rem', fontWeight: 600
+                    }}>
                         {error}
                     </div>}
                 </form>
-                <p style={{ textAlign: 'center', marginTop: 28, fontSize: 16, color: '#222' }}>Already have an account? <a href="/login" style={{ color: '#1976d2', fontWeight: 700 }}>Login</a></p>
+
+                <p style={{ marginTop: '1.5rem', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                    Already have an account? <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 600 }}>Login</Link>
+                </p>
             </div>
-            <style>{`
-                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-                @media (max-width: 500px) {
-                    div[style*='minHeight: 100vh'] > div { min-width: 97vw !important; max-width: 99vw !important; padding: 22px 3vw 18px 3vw !important; }
-                }
-            `}</style>
         </div>
     );
 }
 
-export default Signup; 
+export default Signup;

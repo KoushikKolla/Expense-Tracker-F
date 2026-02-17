@@ -73,6 +73,7 @@ function Profile() {
                     <>
                         <div><strong>Username:</strong> {user.username}</div>
                         <div><strong>Email:</strong> {user.email}</div>
+                        <div><strong>Group Name:</strong> {user.groupName || '—'}</div>
                         <div><strong>Registered:</strong> {new Date(user.createdAt).toLocaleDateString()}</div>
                         {loginTime && <div><strong>Logged in at:</strong> {loginTime.toLocaleString()}</div>}
                         <button className="profile-edit-btn" onClick={handleEdit}>Edit Profile</button>

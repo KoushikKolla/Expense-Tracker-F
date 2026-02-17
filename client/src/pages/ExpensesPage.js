@@ -16,6 +16,7 @@ function ExpensesContent() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [showToast, setShowToast] = useState(false);
     const [editTransaction, setEditTransaction] = useState(null);
+    const [updateError, setUpdateError] = useState("");
     useEffect(() => { fetchTransactions({ type: 'expense' }); }, []);
     const expenses = transactions.filter(t => t.type === 'expense');
     const shownExpenses = filteredExpenses || expenses;
@@ -283,12 +284,26 @@ function ExpensesContent() {
     };
 
     const handleEdit = (transaction) => {
+        if (!user || !transaction.createdBy || (user._id !== transaction.createdBy._id && user._id !== transaction.createdBy)) {
+            alert('You cannot update this transaction.');
+            return;
+        }
         setEditTransaction(transaction);
     };
 
     const handleUpdate = async (updated) => {
-        await updateTransaction(editTransaction._id, updated);
-        setEditTransaction(null);
+        setUpdateError("");
+        try {
+            console.log('Updating transaction:', editTransaction?._id, updated);
+            await updateTransaction(editTransaction._id, updated);
+            setEditTransaction(null);
+        } catch (err) {
+            if (err.response && err.response.status === 403) {
+                setUpdateError(err.response.data.message || 'You cannot update this transaction.');
+            } else {
+                setUpdateError('An error occurred while updating the transaction.');
+            }
+        }
     };
 
     return (
@@ -329,12 +344,13 @@ function ExpensesContent() {
                 <div className="modal-overlay" onClick={() => setEditTransaction(null)}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>
                         <h3>Edit Transaction</h3>
+                        {updateError && <div style={{ color: 'red', marginBottom: 12 }}>{updateError}</div>}
                         <TransactionForm initialValues={editTransaction} onSubmit={handleUpdate} />
                         <button className="cancel-btn" onClick={() => setEditTransaction(null)}>Cancel</button>
                     </div>
                 </div>
             )}
-            <TransactionList transactions={shownExpenses} onEdit={handleEdit} />
+            <TransactionList transactions={shownExpenses} onEdit={handleEdit} user={user} />
             <style>{`
                 @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px);} to { opacity: 1; transform: none; } }
             `}</style>
