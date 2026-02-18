@@ -1,5 +1,6 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://expenseuser:iYstoqooKzyw2Tzr@expense-tracker.xj1kurv.mongodb.net/expense-tracker?appName=expense-tracker";
+const uri = process.env.MONGO_URI;
 
 mongoose.connect(uri)
     .then(() => {

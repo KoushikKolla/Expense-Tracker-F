@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const uri = "mongodb+srv://expenseuser:iYstoqooKzyw2Tzr@expense-tracker.xj1kurv.mongodb.net/expense-tracker?appName=expense-tracker";
+require('dotenv').config();
+const uri = process.env.MONGO_URI;
 
 // Define the clear database function
 const clearDatabase = async () => {
