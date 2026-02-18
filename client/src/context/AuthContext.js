@@ -11,9 +11,13 @@ export const AuthProvider = ({ children }) => {
         return stored ? new Date(stored) : null;
     });
 
+    const API_URL = process.env.NODE_ENV === 'production'
+        ? '/api'
+        : process.env.REACT_APP_API_URL;
+
     useEffect(() => {
         if (token) {
-            axios.get(`${process.env.REACT_APP_API_URL}/auth/user`, {
+            axios.get(`${API_URL}/auth/user`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
                 .then(res => setUser(res.data))
@@ -22,7 +26,7 @@ export const AuthProvider = ({ children }) => {
     }, [token]);
 
     const login = async (email, password) => {
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, { email, password });
+        const res = await axios.post(`${API_URL}/auth/login`, { email, password });
         setToken(res.data.token);
         localStorage.setItem('token', res.data.token);
         setUser(res.data.user);
@@ -32,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signup = async (username, email, password, groupName) => {
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, { username, email, password, groupName });
+        const res = await axios.post(`${API_URL}/auth/signup`, { username, email, password, groupName });
         setToken(res.data.token);
         localStorage.setItem('token', res.data.token);
         setUser(res.data.user);
@@ -42,21 +46,21 @@ export const AuthProvider = ({ children }) => {
     };
 
     const updateProfile = async (data) => {
-        const res = await axios.put(`${process.env.REACT_APP_API_URL}/auth/profile`, data, {
+        const res = await axios.put(`${API_URL}/auth/profile`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
     };
 
     const updateAvatar = async (avatar) => {
-        const res = await axios.put(`${process.env.REACT_APP_API_URL}/auth/avatar`, { avatar }, {
+        const res = await axios.put(`${API_URL}/auth/avatar`, { avatar }, {
             headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
     };
 
     const deleteAccount = async () => {
-        await axios.delete(`${process.env.REACT_APP_API_URL}/auth/account`, {
+        await axios.delete(`${API_URL}/auth/account`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         logout();

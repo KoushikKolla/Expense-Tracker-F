@@ -8,8 +8,12 @@ export const TransactionProvider = ({ children }) => {
     const { token } = useContext(AuthContext);
     const [transactions, setTransactions] = useState([]);
 
+    const API_URL = process.env.NODE_ENV === 'production'
+        ? '/api'
+        : process.env.REACT_APP_API_URL;
+
     const fetchTransactions = async (params = {}) => {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/expenses`, {
+        const res = await axios.get(`${API_URL}/expenses`, {
             headers: { Authorization: `Bearer ${token}` },
             params,
         });
@@ -17,7 +21,7 @@ export const TransactionProvider = ({ children }) => {
     };
 
     const addTransaction = async (data) => {
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/expenses`, data, {
+        const res = await axios.post(`${API_URL}/expenses`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
         setTransactions(prev => [res.data, ...prev]);
@@ -26,7 +30,7 @@ export const TransactionProvider = ({ children }) => {
     const updateTransaction = async (id, data) => {
         console.log('updateTransaction called with id:', id, 'data:', data);
         try {
-            const res = await axios.put(`${process.env.REACT_APP_API_URL}/expenses/${id}`, data, {
+            const res = await axios.put(`${API_URL}/expenses/${id}`, data, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setTransactions(prev => prev.map(t => t._id === id ? res.data : t));
@@ -40,7 +44,7 @@ export const TransactionProvider = ({ children }) => {
     };
 
     const deleteTransaction = async (id) => {
-        await axios.delete(`${process.env.REACT_APP_API_URL}/expenses/${id}`, {
+        await axios.delete(`${API_URL}/expenses/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         setTransactions(prev => prev.filter(t => t._id !== id));
