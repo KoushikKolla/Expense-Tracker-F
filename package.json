@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "echo 'Please run npm start in client or server directory'",
+    "dev": "npm run build",
     "build": "cd client && npm run build && cd ../server && npm install",
     "install-all": "npm install && cd client && npm install && cd ../server && npm install"
   },
