@@ -7,7 +7,7 @@ import './BillUpload.css';
 
 const BillUpload = () => {
     const navigate = useNavigate();
-    const { token } = useContext(AuthContext);
+    const { token, API_URL } = useContext(AuthContext);
     const { isDarkMode } = useContext(DarkModeContext);
 
     const [formData, setFormData] = useState({
@@ -94,7 +94,7 @@ const BillUpload = () => {
                 formDataToSend.append(key, formData[key]);
             });
 
-            const response = await axios.post('http://localhost:5000/api/bills/upload',
+            const response = await axios.post(`${API_URL}/bills/upload`,
                 formDataToSend,
                 {
                     headers: {

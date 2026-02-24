@@ -7,7 +7,7 @@ import './BillsList.css';
 import { FaTimes, FaTrash, FaEye } from 'react-icons/fa';
 
 const BillsList = () => {
-    const { token } = useContext(AuthContext);
+    const { token, API_URL } = useContext(AuthContext);
     const { isDarkMode } = useContext(DarkModeContext);
 
     const [bills, setBills] = useState([]);
@@ -25,7 +25,7 @@ const BillsList = () => {
 
     const fetchBills = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/bills/user', {
+            const response = await axios.get(`${API_URL}/bills/user`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setBills(response.data);
@@ -41,7 +41,7 @@ const BillsList = () => {
         if (!window.confirm('Are you sure you want to delete this bill?')) return;
 
         try {
-            await axios.delete(`http://localhost:5000/api/bills/${transactionId}`, {
+            await axios.delete(`${API_URL}/bills/${transactionId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setBills(bills.filter(bill => bill._id !== transactionId));
@@ -54,7 +54,7 @@ const BillsList = () => {
     const fetchBillFile = async (fileId) => {
         console.log('Fetching bill file with token:', token);
         const response = await fetch(
-            `http://localhost:5000/api/bills/file/${fileId}`,
+            `${API_URL}/bills/file/${fileId}`,
             {
                 headers: { Authorization: `Bearer ${token}` }
             }
@@ -112,7 +112,7 @@ const BillsList = () => {
     };
 
     const getFileUrl = (fileId) => {
-        return `http://localhost:5000/api/bills/file/${fileId}`;
+        return `${API_URL}/bills/file/${fileId}`;
     };
 
     // Accessibility: close modal on Esc
