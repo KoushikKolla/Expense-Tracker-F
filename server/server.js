@@ -28,8 +28,7 @@ app.use('/api/incomes', require('./routes/incomes'));
 app.use('/api/bills', require('./routes/bills'));
 
 // MongoDB connection
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://expenseuser:iYstoqooKzyw2Tzr@expense-tracker.xj1kurv.mongodb.net/expense-tracker?appName=expense-tracker';
-mongoose.connect(MONGO_URI, {
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })

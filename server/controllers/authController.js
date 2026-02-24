@@ -2,7 +2,6 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Group = require('../models/Group');
-const JWT_SECRET = process.env.JWT_SECRET || 'expense_tracker_secret_koushik_2026';
 
 exports.signup = async (req, res) => {
     try {
@@ -41,7 +40,7 @@ exports.signup = async (req, res) => {
         }
 
         console.log('User registered successfully:', user._id);
-        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.status(201).json({ token, user: { id: user._id, username, email, group: groupId } });
     } catch (err) {
         console.error('Signup Error:', err);
@@ -67,7 +66,7 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         console.log('Login successful for:', email);
         res.json({ token, user: { id: user._id, username: user.username, email: user.email } });
     } catch (err) {
