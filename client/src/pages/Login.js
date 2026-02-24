@@ -21,10 +21,17 @@ function Login() {
             // Small delay to ensure token is set
             setTimeout(() => navigate('/dashboard'), 100);
         } catch (err) {
-            if (err.response && err.response.data && err.response.data.message) {
-                setError(err.response.data.message);
+            console.error('Login error:', err);
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                setError(err.response.data.message || `Error: ${err.response.status}`);
+            } else if (err.request) {
+                // The request was made but no response was received
+                setError('No response from server. Please check your internet or if the server is running.');
             } else {
-                setError('Invalid credentials');
+                // Something happened in setting up the request that triggered an Error
+                setError(`Error: ${err.message}`);
             }
         } finally {
             setLoading(false);

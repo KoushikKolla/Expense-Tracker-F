@@ -5,7 +5,8 @@ const Group = require('../models/Group');
 
 exports.signup = async (req, res) => {
     try {
-        const { username, email, password, groupName } = req.body;
+        const { username, password, groupName } = req.body;
+        const email = req.body.email?.trim().toLowerCase();
         const existingUser = await User.findOne({ $or: [{ email }, { username }], isDeleted: false });
         if (existingUser) return res.status(400).json({ message: 'User already exists' });
         let group = await Group.findOne({ groupName });
@@ -29,7 +30,8 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const email = req.body.email?.trim().toLowerCase();
+        const { password } = req.body;
         const user = await User.findOne({ email, isDeleted: false });
         if (!user) return res.status(400).json({ message: 'Invalid credentials' });
         const isMatch = await bcrypt.compare(password, user.password);
